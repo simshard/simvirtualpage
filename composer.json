@@ -1,0 +1,19 @@
+{
+    "name": "sim/inpsyde-challenge",
+    "type": "project",
+    "description": "Inpsyde Challenge Project",
+    "config": {
+        "platform": {
+            "php": "7.2"
+        }
+    },
+    "require": {
+    "brain/monkey": "2.*",
+    "phpunit/phpunit": "^9.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "SimVirtualpage\\":""
+        }
+    }
+}

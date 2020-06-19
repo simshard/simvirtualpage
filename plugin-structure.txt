@@ -1,0 +1,36 @@
+plugin structure
+
+SimVirtualpagePlugin
+    include class file
+    make an instance
+
+
+SimVirtualpage
+    properties
+        string API endpoint URL
+        static $instance
+    class methods
+        CONSTRUCTOR
+            add hooks 
+                wp_enqueue_scripts
+                template_include
+                query_vars
+                load plugin
+
+
+        make an instance (static)
+
+        loader  - stuff that happens to initialize shit
+        
+         Activate plugin
+            add_rewrite_endpoint
+            flush_rewrite_rules
+        
+        Deactivate plugin
+            flush_rewrite_rules
+
+       
+
+
+        
+            
