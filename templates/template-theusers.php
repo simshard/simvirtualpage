@@ -22,6 +22,11 @@ namespace simVirtualpage\templates;
 
 get_header();
 the_post();
+$userdata = $simVirtualpage->doRemoteApiCall();
+if (null ===  $userdata) {
+    $ivpMsg='There was a problem communicating with the API..';
+}
+
 ?>
 <div id="primary" class="content-area">
     <main id="main" class="site-main" role="main">
@@ -42,9 +47,8 @@ the_post();
                         </thead>
                         <tbody>
                         <?php
-                        $userdata = $simVirtualpage->doRemoteApiCall();
-                        if (null ===  $userdata) {
-                            echo 'There was a problem communicating with the API..';
+                        if (isset($ivpMsg) && null !==  $ivpMsg) {
+                            echo $ivpMsg;
                         }
                         echo '<tr>';
                         foreach ($userdata as $user) :

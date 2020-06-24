@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Ipsychallenge Class Doc Comment
+ * Inpsyde challenge Class
  *
  * @category Class
  * @package  SimVirtualpage
@@ -14,47 +14,22 @@ declare(strict_types=1);
 
 namespace SimVirtualpage;
 
-//$simVirtualpage = new SimVirtualpage();
-
 class SimVirtualpage
 {
     public string $apiUrl = 'https://jsonplaceholder.typicode.com/users'; // The API endpoint URL.
 
-    // private
-    public static $instance;
-
-    public static function svpInstance(): object
-    {
-        if (! self::$instance) {
-            self::$instance = new self();
-        }
-        return self::$instance;
-    }
-
     /**
      * Inpsyde plugin challenge constructor
      */
+
     public function __construct()
     {
-        // register_activation_hook(__FILE__, [$this, 'ivpLoadPlugin']);//Doing it wrong
+        add_action('init', [$this, 'ivpActivate']);
+        //OK but Doing it wrong-would be better on register_activation hook
         add_action('wp_enqueue_scripts', [$this, 'addIvpScripts']);
         add_action('template_include', [$this, 'changeTemplate']);
-        add_filter('queryVars', [$this, 'ivpQueryVars']);
-        add_action('init', [$this, 'ivpRewrite']);//Doing it wrong
-        //add_action('init', [$this, 'ivpLoadPlugin']);
     }
-
-
-
-    
-    public function ivpLoadPlugin()
-    {
-        if (get_option('Activated_Plugin') == 'simvirtualpage') {
-            delete_option('Activated_Plugin');
-            /* do stuff once right after activation */
-            add_action('init', [$this, 'ivpActivate']);
-        }
-    }
+ 
     /**
     * Activate plugin
     * on activation
@@ -83,28 +58,7 @@ class SimVirtualpage
         }
         flush_rewrite_rules();
     }
-
-    /**
-     * WP Rewrite rules
-     *
-     * @return void
-     */
-    public function ivpRewrite()
-    {
-        add_rewrite_endpoint('users', EP_PERMALINK);
-        flush_rewrite_rules();
-    }
-
-    /**
-     * Set WP Query vars
-     * @param [array] $vars query string var
-     * @return array
-     */
-    public function ivpQueryVars(array $vars): array
-    {
-        $vars[] = 'users';
-        return $vars;
-    }
+ 
 
     /**
      * Enqueue styles
@@ -148,6 +102,7 @@ class SimVirtualpage
                 return $newTemplate;
             }
         }
+
         //or Fall back to original template
         return $template;
     }
@@ -170,11 +125,12 @@ class SimVirtualpage
             }
         }
         $userinfo = $ivpUserinfo['body'];
-
-        try {
-            $userinfo = json_decode($userinfo);
-        } catch (\Exception $ex) {
-            $userinfo = null;
+        if (!empty($userinfo)) {
+            try {
+                $userinfo = json_decode($userinfo);
+            } catch (\Exception $ex) {
+                $userinfo = null;
+            }
         }
         return $userinfo;
     }

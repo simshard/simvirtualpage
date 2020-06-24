@@ -74,8 +74,29 @@ class SimVirtualpageTest extends Testcase
      */
     public function findThePluginClass()
     {
-        $instance=SimVirtualpage::svpInstance();
+        $instance = new SimVirtualpage();
+
         $this->assertIsObject($instance);
         $this->assertEquals($instance->apiUrl, "https://jsonplaceholder.typicode.com/users");
     }
+
+    /**@test
+     * failed to use Brain Monkey/Mockery to test  added hooks
+     */
+
+//    public function testClassActuallyAddsHooks()
+//    {
+//        $instance = new SimVirtualpage();
+//        $instance->__construct();
+//
+//        //self::assertTrue(has_action('init', [ SimVirtualpage::class, 'init' ]));
+//        //self::assertTrue(has_action('init', [ SimVirtualpage::class, 'ivpActivate' ]));
+//        //self::assertTrue(has_filter('queryVars', 'ivpQueryVars'));
+//        //self::assertTrue(has_filter('queryVars', 'queryVars'));
+//
+//        //Actions\expectAdded('init');
+//        //Filters\expectAdded('queryVars');
+//
+//        $this->assertTrue(Filters\applied('ivpQueryVars') > 0);
+//    }
 }
