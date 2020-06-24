@@ -87,16 +87,19 @@ class SimVirtualpageTest extends Testcase
 //    public function testClassActuallyAddsHooks()
 //    {
 //        $instance = new SimVirtualpage();
-//        $instance->__construct();
+//        //$instance->__construct();
 //
 //        //self::assertTrue(has_action('init', [ SimVirtualpage::class, 'init' ]));
 //        //self::assertTrue(has_action('init', [ SimVirtualpage::class, 'ivpActivate' ]));
+//        //self::assertTrue(has_action('template_include', [ SimVirtualpage::class, 'changeTemplate' ]));
+//        //self::assertTrue(has_action('wp_enqueue_scripts', [ SimVirtualpage::class, 'addIvpScripts' ]));
+//
 //        //self::assertTrue(has_filter('queryVars', 'ivpQueryVars'));
 //        //self::assertTrue(has_filter('queryVars', 'queryVars'));
 //
 //        //Actions\expectAdded('init');
 //        //Filters\expectAdded('queryVars');
 //
-//        $this->assertTrue(Filters\applied('ivpQueryVars') > 0);
+//       // $this->assertTrue(Filters\applied('ivpQueryVars') > 0);
 //    }
 }

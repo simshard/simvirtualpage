@@ -22,7 +22,7 @@ namespace SimVirtualpage;
 
 defined('ABSPATH') or die();
 
-include_once('SimVirtualpage.php');
-
+require_once('SimVirtualpage.php');
 $simVirtualpage = new SimVirtualpage();
-$simVirtualpage ->checkVersions();
+ register_activation_hook(__FILE__, ['\SimVirtualpage\SimVirtualpage', 'ivpInitialise']);
+ register_deactivation_hook(__FILE__, ['\SimVirtualpage\SimVirtualpage', 'ivpDeactivate']);

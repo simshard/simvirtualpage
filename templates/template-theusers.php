@@ -22,11 +22,11 @@ namespace simVirtualpage\templates;
 
 get_header();
 the_post();
+
 $userdata = $simVirtualpage->doRemoteApiCall();
 if (null ===  $userdata) {
-    $ivpMsg = 'There was a problem communicating with the API..';
+    $ivpMsg = 'Communicating with remote API...';
 }
-
 ?>
 <div id="primary" class="content-area">
     <main id="main" class="site-main" role="main">
@@ -49,17 +49,20 @@ if (null ===  $userdata) {
                         <?php
                         if (isset($ivpMsg) && null !==  $ivpMsg) {
                             echo(esc_attr($ivpMsg));
+                            header("Location:" . wp_unslash($_SERVER['PHP_SELF']) . '?users');
                         }
                         echo '<tr>';
-                        foreach ($userdata as $user) :
-                            echo '<td><a class="userlink" href="javascript:void(0);"
-                             user="' . esc_attr($user->id) . '"  >' . esc_attr($user->id) . '</a></td>';
-                            echo '<td><a class="userlink" href="javascript:void(0);"
-                             user="' . esc_attr($user->id) . '">' . esc_attr($user->name) . '</a></td>';
-                            echo '<td><a class="userlink" href="javascript:void(0);"
-                             user="' . esc_attr($user->id) . '">' . esc_attr($user->username) . '</a></td>';
+                        if ($userdata) {
+                            foreach ($userdata as $user) :
+                                echo('<td><a class="userlink" href="javascript:void(0);"
+                                 user="' . esc_attr($user->id) . '"  >' . esc_attr($user->id) . '</a></td>');
+                            echo('<td><a class="userlink" href="javascript:void(0);"
+                                     user="' . esc_attr($user->id) . '">' . esc_attr($user->name) . '</a></td>');
+                            echo('<td><a class="userlink" href="javascript:void(0);"
+                                     user="' . esc_attr($user->id) . '">' . esc_attr($user->username) . '</a></td>');
                             echo'</tr>';
-                        endforeach;
+                            endforeach;
+                        }
                         ?>
                         </tbody>
                     </table>

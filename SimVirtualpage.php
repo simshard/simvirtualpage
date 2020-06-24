@@ -16,7 +16,7 @@ namespace SimVirtualpage;
 
 class SimVirtualpage
 {
-    public string $apiUrl = 'https://jsonplaceholder.typicode.com/users'; // The API endpoint URL.
+     
 
     /**
      * Inpsyde plugin challenge constructor
@@ -25,25 +25,29 @@ class SimVirtualpage
     public function __construct()
     {
         add_action('init', [$this, 'ivpActivate']);
-        //OK but Doing it wrong-would be better on register_activation hook
+        //OK but Doing it wrong-unnecessary performance overhead
+        //-would be better on register_activation hook if I could get it to work
         add_action('wp_enqueue_scripts', [$this, 'addIvpScripts']);
         add_action('template_include', [$this, 'changeTemplate']);
     }
 
     /**
+     * Initialise plugin
      * Check PHP and WP Versions meet minimum requirements
-     * Function name :  CheckVersions
+     * set api url option
      * Return Type : None
      */
-    public function checkVersions()
+    public function ivpInitialise()
     {
-        global $wp_version;
         if (version_compare(PHP_VERSION, '7.0.0') < 0) {
-            wp_die(esc_html__('PHP version must be at least 7.0 to use this plugin'));
+            wp_die(esc_html__("PHP version must be at least 7.0 to use this plugin"));
         }
+        global $wp_version;
         if ($wp_version < 5.0) {
             wp_die(esc_html__('WordPress must be at least version 5.0 to use this plugin'));
         }
+        add_option('ApiEndPoint', 'https://jsonplaceholder.typicode.com/users');
+        add_option('Initialised_Plugin', 'simvirtualpage');
     }
  
     /**
@@ -73,6 +77,8 @@ class SimVirtualpage
             return;
         }
         flush_rewrite_rules();
+        delete_option('ApiEndPoint');
+        delete_option('Activated_Plugin');
     }
  
 
@@ -118,7 +124,6 @@ class SimVirtualpage
                 return $newTemplate;
             }
         }
-
         //or Fall back to original template
         return $template;
     }
@@ -131,7 +136,8 @@ class SimVirtualpage
     {
         $ivpUserinfo = get_transient('ivp_userinfo');
         if (false === $ivpUserinfo) {
-            $response = wp_remote_get($this->apiUrl);
+            $apiEndPoint = get_option('ApiEndPoint');
+            $response = wp_remote_get($apiEndPoint);
             if (is_array($response) && ! is_wp_error($response)) {
                 set_transient('ivp_userinfo', $response, HOUR_IN_SECONDS);
             }
