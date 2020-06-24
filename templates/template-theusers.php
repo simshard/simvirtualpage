@@ -24,7 +24,7 @@ get_header();
 the_post();
 $userdata = $simVirtualpage->doRemoteApiCall();
 if (null ===  $userdata) {
-    $ivpMsg='There was a problem communicating with the API..';
+    $ivpMsg = 'There was a problem communicating with the API..';
 }
 
 ?>
@@ -48,7 +48,7 @@ if (null ===  $userdata) {
                         <tbody>
                         <?php
                         if (isset($ivpMsg) && null !==  $ivpMsg) {
-                            echo $ivpMsg;
+                            echo(esc_attr($ivpMsg));
                         }
                         echo '<tr>';
                         foreach ($userdata as $user) :

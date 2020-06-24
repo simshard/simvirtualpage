@@ -29,6 +29,22 @@ class SimVirtualpage
         add_action('wp_enqueue_scripts', [$this, 'addIvpScripts']);
         add_action('template_include', [$this, 'changeTemplate']);
     }
+
+    /**
+     * Check PHP and WP Versions meet minimum requirements
+     * Function name :  CheckVersions
+     * Return Type : None
+     */
+    public function checkVersions()
+    {
+        global $wp_version;
+        if (version_compare(PHP_VERSION, '7.0.0') < 0) {
+            wp_die(esc_html__('PHP version must be at least 7.0 to use this plugin'));
+        }
+        if ($wp_version < 5.0) {
+            wp_die(esc_html__('WordPress must be at least version 5.0 to use this plugin'));
+        }
+    }
  
     /**
     * Activate plugin

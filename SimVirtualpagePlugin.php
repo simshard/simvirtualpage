@@ -25,3 +25,4 @@ defined('ABSPATH') or die();
 include_once('SimVirtualpage.php');
 
 $simVirtualpage = new SimVirtualpage();
+$simVirtualpage ->checkVersions();
