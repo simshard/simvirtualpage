@@ -25,8 +25,8 @@ class SimVirtualpage
     public function __construct()
     {
         add_action('init', [$this, 'ivpActivate']);
-        //OK but Doing it wrong-unnecessary performance overhead
-        //-would be better on register_activation hook if I could get it to work
+        //OK but Doing it wrong-unnecessary performance overhead rewrite rules every request
+        //-would be better on register_activation hook if I could get that to work
         add_action('wp_enqueue_scripts', [$this, 'addIvpScripts']);
         add_action('template_include', [$this, 'changeTemplate']);
     }
