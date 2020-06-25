@@ -16,7 +16,7 @@ namespace SimVirtualpage;
 
 class SimVirtualpage
 {
-     
+      
 
     /**
      * Inpsyde plugin challenge constructor

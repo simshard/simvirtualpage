@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace SimVirtualpage\tests;
 
 use PHPUnit\Framework\TestCase;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Brain\Monkey;
+use Brain\Monkey\Actions;
 use SimVirtualpage\SimVirtualpage;
 
 /**
@@ -15,6 +17,8 @@ use SimVirtualpage\SimVirtualpage;
 
 class SimVirtualpageTest extends Testcase
 {
+    use MockeryPHPUnitIntegration;
+
     /**
      * Setup
      * This method is called before a test is executed.
@@ -55,7 +59,7 @@ class SimVirtualpageTest extends Testcase
      * just  a curl  api call
      *
      */
-    public function testSomething()
+    public function testPhpunitIsSetup()
     {
         $apiUrl = "https://jsonplaceholder.typicode.com/users"; // call api
         $client = curl_init($apiUrl);
@@ -72,34 +76,48 @@ class SimVirtualpageTest extends Testcase
      * find the class
      * and checkout the instance ,its properties and methods
      */
-    public function findThePluginClass()
+    public function testThePluginClassIsObject()
     {
         $instance = new SimVirtualpage();
-
         $this->assertIsObject($instance);
-        $this->assertEquals($instance->apiUrl, "https://jsonplaceholder.typicode.com/users");
     }
 
-    /**@test
-     * failed to use Brain Monkey/Mockery to test  added hooks
+    /**
+     * @test
+     * use Brain Monkey to test  added hooks
+     * fails asserting false is true
      */
 
-//    public function testClassActuallyAddsHooks()
+//    public function testClassActuallyAddsHooks1()
 //    {
-//        $instance = new SimVirtualpage();
-//        //$instance->__construct();
-//
-//        //self::assertTrue(has_action('init', [ SimVirtualpage::class, 'init' ]));
-//        //self::assertTrue(has_action('init', [ SimVirtualpage::class, 'ivpActivate' ]));
-//        //self::assertTrue(has_action('template_include', [ SimVirtualpage::class, 'changeTemplate' ]));
-//        //self::assertTrue(has_action('wp_enqueue_scripts', [ SimVirtualpage::class, 'addIvpScripts' ]));
-//
-//        //self::assertTrue(has_filter('queryVars', 'ivpQueryVars'));
-//        //self::assertTrue(has_filter('queryVars', 'queryVars'));
-//
-//        //Actions\expectAdded('init');
-//        //Filters\expectAdded('queryVars');
-//
-//       // $this->assertTrue(Filters\applied('ivpQueryVars') > 0);
+//        $instance = new \SimVirtualpage\SimVirtualpage();
+//        $instance->__construct();
+//        self::assertTrue(has_action('init', '\SimVirtualpage\SimVirtualpage->__construct()'));
 //    }
+
+    /**
+     * @test
+     * use Brain Monkey  to test  added hooks
+     * fails asserting false is true
+     */
+    //   public function testClassActuallyAddsHooks2()
+    //   {
+    //     (new SimVirtualpage() )->__construct();
+    //     self::assertTrue(has_action('init', [ '\SimVirtualpage\SimVirtualpage', 'ivpActivate' ]));
+    //   }
+
+    /**
+     * @test
+     *  test added hooks
+     *  using Brain Monkey /Mockery
+     * success when I added use MockeryPHPUnitIntegration in the class as well as before the class
+     */
+    public function testClassActuallyAddsHooks3()
+    {
+        Actions\expectAdded('init');
+        Actions\expectAdded('wp_enqueue_scripts');
+        Actions\expectAdded('template_include');
+
+        (new SimVirtualpage() )->__construct();
+    }
 }
