@@ -18,6 +18,7 @@ use SimVirtualpage\SimVirtualpage;
 class SimVirtualpageTest extends Testcase
 {
     use MockeryPHPUnitIntegration;
+
     /**
      * Setup
      * This method is called before a test is executed.
@@ -81,19 +82,6 @@ class SimVirtualpageTest extends Testcase
         $instance = new SimVirtualpage();
         $this->assertIsObject($instance);
     }
-
-    /**
-     * @test
-     * use Brain Monkey to test  added hooks
-     * fails asserting false is true = i am referencing the callback wrongly somehow
-     */
-
-//    public function testClassActuallyAddsHooks1()
-//    {
-//        $instance = new \SimVirtualpage\SimVirtualpage();
-//        $instance->__construct();
-//        self::assertTrue(has_action('init', '\SimVirtualpage\SimVirtualpage->__construct()'));
-//    }
 
     /**
      * @test
