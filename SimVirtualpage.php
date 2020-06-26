@@ -46,7 +46,7 @@ class SimVirtualpage
         if ($wp_version < 5.0) {
             wp_die(esc_html__('WordPress must be at least version 5.0 to use this plugin'));
         }
-        add_option('ApiEndPoint', 'https://jsonplaceholder.typicode.com/users');
+        add_option('ApiEndPoint', 'https://jsonplaceholder.typicode.com/users/');
         add_option('Initialised_Plugin', 'simvirtualpage');
     }
  
@@ -88,6 +88,7 @@ class SimVirtualpage
      */
     public function addIvpScripts()
     {
+        $apiEndPoint = get_option('ApiEndPoint');
         wp_register_style(
             'ivp-css',
             plugins_url('templates/css', __FILE__) . '/ivp-style.css',
@@ -103,6 +104,12 @@ class SimVirtualpage
         );
         wp_enqueue_style('ivp-css', '', [], '1.0');
         wp_enqueue_script('user-data', '', [], '1.0', false);
+       
+        wp_localize_script(
+            'user-data',
+            'ivpVars',
+            ['apiurl' => $apiEndPoint]
+        );
     }
 
     /**

@@ -1,6 +1,6 @@
 jQuery(document).ready(function ($) {
     var log = $("#user-data");
-    var apiurl = "https://jsonplaceholder.typicode.com/users/";
+    var apiurl = ivpVars.apiurl;
     var ajaxLoading = false;
     var spinner = $("#cG");
     spinner.hide();
@@ -37,7 +37,11 @@ jQuery(document).ready(function ($) {
                     });
                 }
             }); //each
-        })
+           
+            console.dir(data);
+             
+        } //success handler
+        )
             .done(function () {
                 ajaxLoading = false;
                 spinner.hide();
@@ -47,5 +51,7 @@ jQuery(document).ready(function ($) {
                 spinner.hide();
                 log.html(`<p>An error has occurred while fetching data: <em>${xhr.statusText}</em></p>`);
             })
-    }); //click     
+    console.dir(jqxhr);        
+    }); //click  
+    
 }); //DomReady

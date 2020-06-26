@@ -49,19 +49,19 @@ if (null ===  $userdata) {
                         <?php
                         if (isset($ivpMsg) && null !==  $ivpMsg) {
                             echo(esc_attr($ivpMsg));
-                            header("Location:" . wp_unslash($_SERVER['PHP_SELF']) . '?users');
+                            header("Location:" . wp_unslash(isset($_SERVER['PHP_SELF'])) . '?users');
                         }
                         echo '<tr>';
                         if ($userdata) {
-                            foreach ($userdata as $user) :
+                            foreach ($userdata as $user) {
                                 echo('<td><a class="userlink" href="javascript:void(0);"
                                  user="' . esc_attr($user->id) . '"  >' . esc_attr($user->id) . '</a></td>');
-                            echo('<td><a class="userlink" href="javascript:void(0);"
+                                echo('<td><a class="userlink" href="javascript:void(0);"
                                      user="' . esc_attr($user->id) . '">' . esc_attr($user->name) . '</a></td>');
-                            echo('<td><a class="userlink" href="javascript:void(0);"
+                                echo('<td><a class="userlink" href="javascript:void(0);"
                                      user="' . esc_attr($user->id) . '">' . esc_attr($user->username) . '</a></td>');
-                            echo'</tr>';
-                            endforeach;
+                                echo'</tr>';
+                            }
                         }
                         ?>
                         </tbody>
