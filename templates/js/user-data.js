@@ -42,7 +42,6 @@ jQuery(document).ready(function ($) {
            ajaxLoading = false;
            spinner.hide();
         } else {
-             console.log('fetching:'+userDataUrl);
             var jqxhr = $.getJSON(userDataUrl, function (data) {
             formatUserdata(data);
             })
