@@ -85,8 +85,24 @@ class SimVirtualpageTest extends Testcase
 
     /**
      * @test
-     * use Brain Monkey  to test  added hooks
+     * Failing    test  added hooks
+     * Failed asserting that false is true.
+     * i am misunderstanding something or doingitwrong
      *
+     */
+//    public function testClassActuallyAddsHooks1()
+//    {
+//        (new SimVirtualpage() );
+//        self::assertTrue(has_action('init', [ SimVirtualpage::class, 'ivpActivate' ]));
+//        self::assertTrue(has_action('wp_enqueue_scripts',
+//             [ SimVirtualpage::class, 'addIvpScripts']));
+//        self::assertTrue(has_action('template_include',
+//             [ SimVirtualpage::class, 'changeTemplate']));
+//    }
+    /**
+     * @test
+     * use Brain Monkey  to test  added hooks
+     * but i cannot get it to admit which callbacks are hooked
      */
     public function testClassActuallyAddsHooks2()
     {
@@ -98,7 +114,7 @@ class SimVirtualpageTest extends Testcase
 
     /**
      * @test
-     *  test added hooks
+     *  test added hooks - but not which callbacks are hooked
      *  using Brain Monkey /Mockery
      */
     public function testClassActuallyAddsHooks3()
