@@ -24,6 +24,7 @@ get_header();
 the_post();
 
 $userdata = $simVirtualpage->doRemoteApiCall();
+
 if (null ===  $userdata) {
     $ivpMsg = 'Communicating with remote API...';
 }
@@ -49,7 +50,7 @@ if (null ===  $userdata) {
                         <?php
                         if (isset($ivpMsg) && null !==  $ivpMsg) {
                             echo(esc_attr($ivpMsg));
-                            header("Location:" . wp_unslash(isset($_SERVER['PHP_SELF'])) . '?users');
+                            header("Location:/index.php?users");
                         }
                         echo '<tr>';
                         if ($userdata) {

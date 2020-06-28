@@ -46,7 +46,7 @@ class SimVirtualpage
         if ($wp_version < 5.0) {
             wp_die(esc_html__('WordPress must be at least version 5.0 to use this plugin'));
         }
-        add_option('ApiEndPoint', 'https://jsonplaceholder.typicode.com/users/');
+        add_option('ivpApiEndPoint', 'https://jsonplaceholder.typicode.com/users/');
         add_option('Initialised_Plugin', 'simvirtualpage');
     }
  
@@ -77,8 +77,9 @@ class SimVirtualpage
             return;
         }
         flush_rewrite_rules();
-        delete_option('ApiEndPoint');
+        delete_option('ivpApiEndPoint');
         delete_option('Activated_Plugin');
+        delete_option('Initialised_Plugin');
     }
  
 
@@ -88,7 +89,7 @@ class SimVirtualpage
      */
     public function addIvpScripts()
     {
-        $apiEndPoint = get_option('ApiEndPoint');
+        $apiEndPoint = get_option('ivpApiEndPoint');
         wp_register_style(
             'ivp-css',
             plugins_url('templates/css', __FILE__) . '/ivp-style.css',
@@ -143,14 +144,14 @@ class SimVirtualpage
     {
         $ivpUserinfo = get_transient('ivp_userinfo');
         if (false === $ivpUserinfo) {
-            $apiEndPoint = get_option('ApiEndPoint');
+            $apiEndPoint = get_option('ivpApiEndPoint');
             $response = wp_remote_get($apiEndPoint);
             if (is_array($response) && ! is_wp_error($response)) {
                 set_transient('ivp_userinfo', $response, HOUR_IN_SECONDS);
             }
             if (is_wp_error($response)) {
-                $errorMessage = $response->get_error_message();
-                return(esc_html($errorMessage));
+                $errorMessage = esc_html($response->get_error_message());
+                return($errorMessage);
             }
         }
         $userinfo = $ivpUserinfo['body'];
