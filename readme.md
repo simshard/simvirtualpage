@@ -1,104 +1,47 @@
 ## Inpsyde Challenge
-
-
-Restart and rebuild demo plugin using better development techniques learned
-
-reinstall  a WP instance using Composer and WP-starter
-now have empty wp with preinstalled theme  and plugins
-wp super cache is active and server has zend opcode cache - I swerved memcached because windows 
-next 
-* check out brainmonkey  https://brain-wp.github.io/BrainMonkey/
-* get wp-plugin boilerplate
-* inpsyde code standards 
-
-
-###############################################
-big gap in notes  when i eg.
-study regex,learned markdown,read the codex and stackexchange,etc...
-study use of composer in wordpress context
- wp-setup to create a dev environment and install   dev packages  for testing ,coding standards- not using any other packages like guzzle or caching  libraries -keep it simple and just use wp itself
-read about unit testing wp and tried to setup wp test framework - well i did but that is not what I need - dont need wp core and their test suite - this unit testing just need s phpunit to test plugin class- dicovered monkey/brain was the thing to use and studyied all that not yet used in actual unit test but its set up and ready to go
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-**TO FIX** plugin initialises badly some times and errors at first view with 
-*Uncaught Error: json_decode() expects parameter 1 to be string, null given*
-
-
-Testing works & plugin works but has faults  -query monitor and transients and options written to db
-etc shows that certain parts of plugin are not working or are working but i am doing it wrong
-eg activate /deactivate not working - transients are not set as expected and WP **add_rewrite_rule** not happening   though **add rewrite endpoint** works fine -that  gives me url  like  ***inpsyde-challenge.test/?users***
-i would prefer **inpsyde-challenge.test/users**
-
-plugin hooks ivpRewrite method onto the init hook  which is bad cos it happens on every request and constant flushing of rewrite must be avoided  - refactor to  sort this and probably add it using
-the **register_activation_hook** HOOK 
-need refactor   initialize plugin    plugin loader methods
-
-
-setting up testing-use TDD to find and fix problems with plugin class and methods
-improvements to  class and methods improve structure and organization of plugin  features and functionality  and best practice
-
-check that phpunit is setup correctly
-   i had to read the docs 
-check that the plugin class is actually instantiated and that phpunit can find it
--- better understand namespacing  and fix usage-had to RTD
-TO DO - Monkey use and mocking of WP funcs in plugin class
-
-      - test plugin class methods
-
-Refactoring plugin structure
-static instance? what are the advantages - is it the thing to do or not is this the singleton pattern im employing err maybe -
- 
-
-
-
-
-
-### Caching considered
-dont go down the memcached /memcache  rabbithole  just now
-memcached not on my windows dev server -laragon supports it but documentation is a bit sketchy
-ditto redis - too much for now -
-keep it simple and use wp Transients api
- 
-HTTP caching   
-ajax/jquery call using promise
-
--  to store transients used to cache http reponses
- 
-v1 used guzzle for Remote Api call- which is fine  but 
-keep it simpler  and use wp http API  instead
-*wp_remote_get()*
-
-remote api call returns the whole dataset of users
-but the brief requests  calling the api once more  for individual users
-first  api call to users endpoint is all cached in a  wp transient 
- but we will call the api again in a jquery ajax way  for each individual user even though we could just get the data from what we already have
- not sure about tools for unit testing  jquery stuff - have not tried JQUNIT etc yet
-
-_________
-
-### TODO
-* gitignore
-* tidyup and push to new Git repo
-*  
-* caching of api calls  
-     * using wp transients
-     
-     * code cache js code for jquery  calls
-                                   
- 
+_To write a WordPress plugin which makes available a custom endpoint on the WordPress site.
+On navigating to that endpoint, the plugin will send an HTTP request to a REST API endpoint
+ (https://jsonplaceholder.typicode.com/users).
+ The plugin will parse the JSON response to build and display an HTML table.
+Each row in the HTML table will show the details for a user, and links in the table will make another API request to the user-details endpoint.
+Some kind of cache is required for the HTTP requests.
+The plugin targets the current version of Wordpress and PHP version >7.0 ,and requires full Composer support.
+The code should be compliant with Inpsyde code style and include automated unit tests, README and  license files_
 
  
+## Project Setup and development environment ##
 
- 
-   
+My development machine currently runs Windows 7, my IDE is MS Visual Code and Laragon is my web server manager.
+To create a suitable development environment I used the wecodemore/wpstarter composer package to install a current edition of Wordpress and some development and other plugins (error-log-monitor, debug-bar, query-monitor, wp-super-cache etc. ).
 
+I have not worked with Wordpress a great deal in the past two or three years , though I am used to using Wordpress to create websites and applications. In the last couple of years,especially since the advent of PHP7 ,Node and ES2015+,  I have sought to improve and update my coding skills. I have improved my understanding and use of OOP techniques and principles in PHP and Javascript , and learned to use frameworks like Laravel and Vue as well as tools such as Composer, Webpack, Git, Vagrant, Docker and PhpUnit etc.
+I had to do some reading and research to get back up to speed with Wordpress and setting up a development environment using WPstarter and Composer.
+
+Once I had created my development environment and reacquainted myself with the WP Codex and the Plugin handbook, the initial version of the plugin itself was created fairly quickly. The detail and quality requirements of the challenge brief required more development time, as well as study time.
+I had an especially difficult time withe Unit testing requirement of the project brief. I have not attempted to create automated tests for Wordpress or Wordpress plugins before, although I have been learning TDD and testing in the context of building Laravel projects.
+At first I went down the wrong rabbit hole of setting up the Wordpress Core testing system. This is especially difficult on a Windows machine and the official documentation is terrible. After some study I realised that the WP Core testing setup was not what was required for Unit testing a plugin as an isolated collection of code and so I studied Brain Monkey and Mockery.
+
+## Plugin setup ##  
+The plugin can be installed via Composer or by uploading the whole plugin archive to a wordpress installation.
+The plugin includes Phpunit, Brain/Monkey and Mockery as dev dependencies for use in the automated testing.
+After setup the virtual page /custom endpoint can be accessed at the URL
+ _https://WEBSITEDOMAINURL/?users_
+
+There are no configurable options or administration pages.
+
+### Styling and CSS ###
+Layout and CSS styling of the plugin templates is simple and basic but the layout is responsive.
+
+
+### HTTP requests and  Caching considered ###
+The plugin uses Wordpress HTTP API (*wp_remote_get()*) to make requests to the remote API endpoint and uses the  WP transient API to store the response data. The user data will not be re-requested fom the remote site  again unless the transient cache entry expires (after one hour).
+
+Secondary api requests for the details of individual users are handled using an asynchronous Jquery Ajax script.  Response data for individual users are cached by javascript in a custom object defined by the script.The cache object exists in the browser window object scope and during the users session  subsequent requests are served with response data from the cache oibject rather than from the remote api.
+This cached data persists for only as long as the users browser session lasts  or the page is refreshed.
  
- 
-#### Testing
+In a small application, caching Jquery selectors is acheived by declaring all of your objects as variables and using the new variables throughout the script  rather than repeating the same selecter multiple times. Otherwise each use of a particular selecter requires Jquery to trawl the whole DOM again to get the results for the selecter call and then store it in another jQuery object.
  
 
-* tests- the endpoint or virt page exists returns 200
-* the virt page makes a http request to api
-* a json result set  is returned
-* page contains ++ whatever  
-some of this is feature/acceptance testing not unit and thats not in the brief
- 
+### Unit Tests ##
+
+The plugin contains some simple unit tests to check that the test environment is configured correctly and that Action hooks are added in the class constructor. After some struggle I managed to make use of Brain Monkey and Mockery to  carry out very basic tests. However I feel the  test suite I made does not cover enough aspects of the plugin class.
