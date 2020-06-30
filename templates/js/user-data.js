@@ -1,7 +1,7 @@
 var cache = {};
 jQuery(document).ready(function ($) {
     var log = $("#user-data");
-    var apiurl = "https://jsonplaceholder.typicode.com/users/";
+    var apiurl = ivpVars.apiurl;//"https://jsonplaceholder.typicode.com/users/";
     var ajaxLoading = false;
     var spinner = $("#cG");
     spinner.hide();
